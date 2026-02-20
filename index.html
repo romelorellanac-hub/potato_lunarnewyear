@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVF14P3028"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,35 +12,35 @@
 </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>Potato: Lunar New Year (One Act)</title>
+<title>Potato: Lunar New Year (Night Lantern Festival)</title>
 <style>
-  html,body{margin:0;height:100%;background:#f6efe2;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;overflow:hidden}
+  html,body{margin:0;height:100%;background:#0b1026;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;overflow:hidden}
   .wrap{height:100%;display:grid;place-items:center}
   canvas{
-    background:#f6efe2;
+    background:#0b1026;
     border-radius:16px;
-    box-shadow:0 18px 70px rgba(0,0,0,.18);
+    box-shadow:0 18px 70px rgba(0,0,0,.25);
     touch-action:none;
   }
   .hud{
     position:fixed;left:14px;top:14px;
-    background:rgba(255,255,255,.70);
-    border:1px solid rgba(0,0,0,.08);
+    background:rgba(15,18,35,.60);
+    border:1px solid rgba(255,255,255,.10);
     padding:10px 12px;border-radius:14px;
     backdrop-filter:blur(10px);
-    color:#2a1b22;
+    color:#f6efe2;
     min-width:260px;
   }
-  .muted{opacity:.75;font-size:12px}
+  .muted{opacity:.80;font-size:12px}
   small{display:block;margin-top:6px;line-height:1.2}
   .pill{
     display:inline-flex;align-items:center;gap:8px;
     padding:6px 10px;border-radius:999px;
-    background:rgba(255,255,255,.75);
-    border:1px solid rgba(0,0,0,.08);
+    background:rgba(15,18,35,.60);
+    border:1px solid rgba(255,255,255,.10);
     font-size:12px;
   }
-  .overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.35);padding:18px}
+  .overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);padding:18px}
   .card{
     width:min(900px,96vw);
     background:rgba(255,255,255,.92);
@@ -59,15 +59,15 @@
     cursor:pointer;
   }
   .btn:hover{filter:brightness(1.05)}
-  .hidden{display:none}
+  .hidden{display:none !important}
 
   /* Mobile controls */
   #touchUI{position:fixed;inset:0;pointer-events:none}
   .pad,.btnE{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none}
   .pad{
     position:fixed;left:14px;bottom:14px;width:156px;height:156px;
-    background:rgba(255,255,255,.72);
-    border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.78);
+    border:1px solid rgba(0,0,0,.10);
     border-radius:18px;
     backdrop-filter:blur(10px);
     display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
@@ -75,7 +75,7 @@
   }
   .pad button{
     background:rgba(180,40,60,.12);
-    border:1px solid rgba(0,0,0,.08);
+    border:1px solid rgba(0,0,0,.10);
     border-radius:14px;color:#2a1b22;font-size:18px
   }
   .pad button:active{background:rgba(180,40,60,.20)}
@@ -88,9 +88,6 @@
     color:#fff;font-size:16px
   }
   .btnE:active{filter:brightness(1.05)}
-  .hidden{
-  display:none !important;
-  }
 </style>
 </head>
 <body>
@@ -98,10 +95,10 @@
 
 <div class="hud">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-    <div><b>Lunar New Year Festival</b></div>
+    <div><b>Lantern Night Festival</b></div>
     <div class="pill" id="actPill">Act: Festival</div>
   </div>
-  <div class="muted" id="status">Walk to the center stage to start the Lion Dance.</div>
+  <div class="muted" id="status">Walk to the center stage and press Talk (E) to start the Lion Dance.</div>
   <small>
     Keyboard: <b>WASD/Arrows</b> · Talk: <b>E</b><br/>
     Mobile: D-pad + <b>Talk</b>
@@ -110,8 +107,8 @@
 
 <div class="overlay" id="loading">
   <div class="card">
-    <h2 style="margin:0 0 8px">Ready to celebrate? 🧧</h2>
-    <div class="muted" style="margin-bottom:10px">Tap Start to enable music on mobile.</div>
+    <h2 style="margin:0 0 8px">Night festival time 🏮✨</h2>
+    <div class="muted" style="margin-bottom:10px">Tap Start to enable sound on mobile.</div>
     <div style="display:flex;justify-content:flex-end;gap:10px">
       <button class="btn" id="startBtn">Start</button>
     </div>
@@ -127,178 +124,173 @@
   <button class="btnE" id="btnE">Talk</button>
 </div>
 
+<!-- Envelope overlay (image) -->
+<div id="envelopeOverlay" class="hidden" style="
+  position:fixed; inset:0; background:rgba(0,0,0,.70);
+  display:flex; align-items:center; justify-content:center;
+  z-index:999; overflow:hidden;">
+  <div id="envelopeCard" style="
+    transform:scale(.6) rotate(-8deg);
+    transition:transform .5s cubic-bezier(.2,1.5,.4,1);
+    text-align:center;">
+    <img src="firehorse.png" alt="Fire Horse" style="
+      max-width:80vw; max-height:80vh;
+      border-radius:18px; box-shadow:0 30px 90px rgba(0,0,0,.6);">
+    <div style="margin-top:10px;color:#fff;font-size:14px;opacity:.85">
+      Press Talk (E) to close 🧧
+    </div>
+  </div>
+</div>
+
+<!-- Optional: your own song (put festival.mp3 next to index.html) -->
+<audio id="bgMusic" src="festival.mp3" loop preload="auto"></audio>
+
 <script>
 (() => {
-  // ===== Canvas setup (NOT pixelated; cozy illustrated) =====
   const canvas = document.getElementById("c");
-  const ctx = canvas.getContext("2d", { alpha: false });
+  const ctx = canvas.getContext("2d", { alpha:false });
 
-  function resize() {
+  // slightly less zoomed than the previous rescue file
+  const ZOOM = 1.0;
+  let started = false;
+
+  function resize(){
     const vw = window.innerWidth, vh = window.innerHeight;
     const targetW = Math.min(1100, vw - 20);
     const targetH = Math.min(680, vh - 20);
-    canvas.width = Math.floor(targetW * devicePixelRatio);
+    canvas.width  = Math.floor(targetW * devicePixelRatio);
     canvas.height = Math.floor(targetH * devicePixelRatio);
-    canvas.style.width = Math.floor(targetW) + "px";
+    canvas.style.width  = Math.floor(targetW) + "px";
     canvas.style.height = Math.floor(targetH) + "px";
-    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
     ctx.imageSmoothingEnabled = true;
   }
   window.addEventListener("resize", resize);
-  window.addEventListener("orientationchange", () => setTimeout(resize, 150));
+  window.addEventListener("orientationchange", ()=>setTimeout(resize,150));
   resize();
 
-  // prevent scroll while playing
-  let started = false;
-  document.addEventListener("touchmove", function(e){
-    if(started) e.preventDefault();
-  }, {passive:false});
+  // stop scroll while playing
+  document.addEventListener("touchmove", (e)=>{ if(started) e.preventDefault(); }, {passive:false});
 
-  // ===== Audio (traditional-ish loop) =====
-  let audioReady=false, audioCtx=null, master=null;
-  let musicStep=0, musicTimer=0;
-  const bpm=88;
-  const spb=60/bpm;
-  const stepLen=spb/2;
-
-  const scaleHz = (n) => 440*Math.pow(2,(n-69)/12);
-  const pent = [62, 64, 66, 69, 71, 74]; // D E F# A B D
-  const pattern = [0,2,3,2, 0,2,4,2, 0,2,3,5, 4,2,1,2];
-
-  function initAudio(){
-    if(audioReady) return;
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if(!AC) return;
-    audioCtx = new AC();
-    master = audioCtx.createGain();
-    master.gain.value = 0.18;
-    master.connect(audioCtx.destination);
-    audioReady=true;
-  }
-  function envGain(g, t0, a, d){
-    g.gain.cancelScheduledValues(t0);
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(a, t0+0.005);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0+d);
-  }
-  function tone(freq, dur, type, vol){
-    if(!audioReady) return;
-    const o=audioCtx.createOscillator();
-    const g=audioCtx.createGain();
-    o.type=type||"sine";
-    o.frequency.value=freq;
-    o.connect(g); g.connect(master);
-    envGain(g, audioCtx.currentTime, vol||0.05, dur||0.18);
-    o.start();
-    o.stop(audioCtx.currentTime + (dur||0.18) + 0.05);
-  }
-  function drumKick(){ tone(70,0.10,"sine",0.10); }
-  function drumHat(){
-    if(!audioReady) return;
-    const t=audioCtx.currentTime;
-    const b=audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate*0.03), audioCtx.sampleRate);
-    const d=b.getChannelData(0);
-    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.4;
-    const s=audioCtx.createBufferSource(); s.buffer=b;
-    const hp=audioCtx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=5000;
-    const g=audioCtx.createGain();
-    s.connect(hp); hp.connect(g); g.connect(master);
-    envGain(g,t,0.03,0.03);
-    s.start(t);
-  }
-  function gong(){
-    tone(392,0.6,"triangle",0.06);
-    setTimeout(()=>tone(196,0.7,"sine",0.03), 60);
-  }
-  function sfxPop(){ tone(880,0.06,"triangle",0.06); }
-  function sfxCheer(){ tone(660,0.10,"triangle",0.05); setTimeout(()=>tone(880,0.10,"triangle",0.04), 80); }
-
-  function updateMusic(dt){
-  // disabled because we use custom music now
-}
-
-  // ===== World =====
-  const world = { w: 1200, h: 720 };
-  const cam = { x: 0, y: 0 };
+  // HUD safe setters
   const statusEl = document.getElementById("status");
-  const actPill = document.getElementById("actPill");
+  const actPill  = document.getElementById("actPill");
+  const setStatus = (t)=>{ if(statusEl) statusEl.textContent = t; };
+  const setAct = (t)=>{ if(actPill) actPill.textContent = t; };
 
-  // Yard composition like your reference
-  const yardTop = Math.floor(world.h * 0.56);   // grass starts
-  const fenceY = Math.floor(world.h * 0.54);    // fence line
-  const stage = { x: world.w/2, y: Math.floor(world.h * 0.76), r: 90 }; // stage in foreground grass
+  // music helper (Safari-safe)
+  function startBackgroundMusic(){
+    const music = document.getElementById("bgMusic");
+    if(!music) return;
+    music.volume = 0.6;
+    const p = music.play();
+    if(p && typeof p.catch === "function") p.catch(()=>{});
+  }
 
-  // ===== Utils =====
+  // World
+  const world = { w: 1200, h: 720 };
+  const cam = { x:0, y:0 };
+  const yardTop = Math.floor(world.h * 0.56);
+  const fenceY  = Math.floor(world.h * 0.54);
+  const stage = { x: world.w/2, y: Math.floor(world.h*0.76), r: 90 };
+
+  // Player
+  const player = { x: world.w/2 - 260, y: stage.y + 90, spd: 190, walk: 0 };
+
+  // Act state
+  const act = { phase:"free", t:0 };
+  const lion = { x: stage.x, y: stage.y, visible:true };
+  const choco = { x: stage.x, y: stage.y, yOff:0, visible:false };
+  const dragon = { x:-260, y: 170, vx: 420, visible:false, carrying:false };
+
+// Sky-flight silhouette (dragon + 🍫 flying into the distance)
+const skyFlight = { active:false, t:0, x:0, y:0, vx:0, vy:0, scale:1 };
+
+
+  // Envelope drop
+  const droppedEnvelope = { active:false, landed:false, x:0,y:0, vx:0,vy:0, rot:0, vr:0 };
+  let envelopeOpen = false;
+
+  // RNG utils
   function rnd(a,b){ return a+Math.random()*(b-a); }
-  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  function clamp(v,a,b){ return Math.max(a, Math.min(b,v)); }
   function dist(ax,ay,bx,by){ return Math.hypot(ax-bx, ay-by); }
 
-  // ===== Entities =====
-  const player = { x: world.w/2 - 280, y: stage.y + 90, spd: 200, walk: 0 };
-
+  // Crowd (villagers + zodiac)
   const crowd = [];
-  // villagers
+  const colors = ["#3b6ea5","#6a3b8c","#2f7a45","#b43a4a","#7a4f2a","#2f506a"];
   for(let i=0;i<18;i++){
     crowd.push({
       kind:"person",
       x:rnd(140, world.w-140),
-      y:rnd(yardTop+30, world.h-110),
+      y:rnd(yardTop+30, world.h-120),
       vx:0, vy:0,
       t:rnd(0,6.28),
-      wait:rnd(0.2,1.8),
-      col: ["#3b6ea5","#6a3b8c","#2f7a45","#b43a4a","#7a4f2a","#2f506a"][i%6],
+      wait:rnd(0.4,1.8),
+      col: colors[i%colors.length],
       seed: Math.floor(Math.random()*9999)
     });
   }
-  // zodiac animals
   const zodiacKinds = ["rat","ox","tiger","rabbit","dragon","snake","horse","goat","monkey","rooster","dog","pig"];
   for(let i=0;i<12;i++){
     crowd.push({
       kind:zodiacKinds[i],
       x:rnd(160, world.w-160),
-      y:rnd(yardTop+30, world.h-120),
+      y:rnd(yardTop+40, world.h-130),
       vx:0, vy:0,
       t:rnd(0,6.28),
-      wait:rnd(0.2,1.6),
+      wait:rnd(0.4,1.6),
       seed: Math.floor(Math.random()*9999)
     });
   }
 
-  // ===== Act state =====
-  const act = { phase: "free", t: 0 };
-
-  const lion = { x: stage.x, y: stage.y, visible: true };
-  const choco = { x: stage.x, y: stage.y, yOff: 0, visible: false };
-  const dragon = { x: -260, y: 170, vx: 420, visible: false, carrying: false };
-
+  // Particles
   const fireworks = [];
   const confetti = [];
 
-  // Envelope drop (content TBD)
-  const droppedEnvelope = {
-    active:false,
-    landed:false,
-    x:0,y:0,
-    vx:0,vy:0,
-    rot:0, vr:0
-  };
-  let envelopeOpen = false;
+  // lightweight SFX
+  let audioCtx = null, master = null;
+  function initSfx(){
+    if(audioCtx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return;
+    audioCtx = new AC();
+    master = audioCtx.createGain();
+    master.gain.value = 0.20;
+    master.connect(audioCtx.destination);
+  }
+  function tone(freq, dur, type, vol){
+    if(!audioCtx) return;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type || "triangle";
+    o.frequency.value = freq;
+    o.connect(g); g.connect(master);
+    const t0 = audioCtx.currentTime;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol||0.05, t0+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+(dur||0.12));
+    o.start();
+    o.stop(t0+(dur||0.12)+0.02);
+  }
+  function sfxPop(){ tone(880,0.08,"triangle",0.06); }
+  function sfxCheer(){ tone(660,0.12,"triangle",0.05); setTimeout(()=>tone(880,0.10,"triangle",0.04), 80); }
 
   function spawnFirework(x,y){
     for(let i=0;i<26;i++){
-      const a=Math.random()*Math.PI*2;
-      const sp=rnd(90,220);
-      fireworks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:rnd(0.8,1.4),
-        col:["rgba(255,80,120,.9)","rgba(255,200,60,.9)","rgba(80,200,255,.9)","rgba(120,255,160,.9)"][i%4]
+      const a = Math.random()*Math.PI*2;
+      const sp = rnd(90,220);
+      fireworks.push({
+        x,y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
+        life:rnd(0.8,1.4),
+        col:["rgba(255,80,120,.95)","rgba(255,200,60,.95)","rgba(80,200,255,.95)","rgba(120,255,160,.95)"][i%4]
       });
     }
     sfxPop();
   }
   function burstConfetti(x,y){
     for(let i=0;i<90;i++){
-      confetti.push({
-        x,y,vx:rnd(-220,220),vy:rnd(-260,-80),
-        life:rnd(1.2,2.2),
+      confetti.push({ x,y, vx:rnd(-220,220), vy:rnd(-260,-80), life:rnd(1.2,2.2),
         col:["rgba(255,80,120,.9)","rgba(255,200,60,.9)","rgba(80,200,255,.9)","rgba(120,255,160,.9)"][i%4]
       });
     }
@@ -308,16 +300,14 @@
   function spawnDroppedEnvelope(x,y){
     droppedEnvelope.active=true;
     droppedEnvelope.landed=false;
-    droppedEnvelope.x=x;
-    droppedEnvelope.y=y;
-    droppedEnvelope.vx = rnd(-60,60);
-    droppedEnvelope.vy = rnd(-40,20);
-    droppedEnvelope.rot = rnd(-0.6,0.6);
-    droppedEnvelope.vr = rnd(-4,4);
+    droppedEnvelope.x=x; droppedEnvelope.y=y;
+    droppedEnvelope.vx=rnd(-60,60);
+    droppedEnvelope.vy=rnd(-40,20);
+    droppedEnvelope.rot=rnd(-0.6,0.6);
+    droppedEnvelope.vr=rnd(-4,4);
   }
   function updateDroppedEnvelope(dt){
     if(!droppedEnvelope.active) return;
-
     droppedEnvelope.vy += 520*dt;
     droppedEnvelope.x += droppedEnvelope.vx*dt;
     droppedEnvelope.y += droppedEnvelope.vy*dt;
@@ -329,19 +319,37 @@
       droppedEnvelope.vy *= -0.25;
       droppedEnvelope.vx *= 0.70;
       droppedEnvelope.vr *= 0.55;
-
       if(Math.abs(droppedEnvelope.vy) < 40){
-        droppedEnvelope.vy = 0;
-        droppedEnvelope.vx = 0;
-        droppedEnvelope.vr = 0;
-        droppedEnvelope.landed = true;
+        droppedEnvelope.vy=0; droppedEnvelope.vx=0; droppedEnvelope.vr=0;
+        droppedEnvelope.landed=true;
       }
     }
   }
 
-  // ===== Speech bubble =====
-  const bubble = { on:false, who:"", full:"", reveal:0, cps:22, ttl:0, done:false };
-  function say(who, text, ttl=6.8, cps=20){
+  // Envelope overlay open/close (close with Talk)
+  function openEnvelopeImage(){
+    const overlay = document.getElementById("envelopeOverlay");
+    const card = document.getElementById("envelopeCard");
+    if(!overlay || !card) return;
+    overlay.classList.remove("hidden");
+    envelopeOpen = true;
+    setTimeout(()=>{ card.style.transform = "scale(1) rotate(0deg)"; }, 50);
+    spawnFirework(player.x, player.y - 60);
+  }
+  function closeEnvelopeImage(){
+    const overlay = document.getElementById("envelopeOverlay");
+    const card = document.getElementById("envelopeCard");
+    if(!overlay || !card) return;
+    card.style.transform = "scale(.6) rotate(8deg)";
+    setTimeout(()=>{
+      overlay.classList.add("hidden");
+      envelopeOpen = false;
+    }, 260);
+  }
+
+  // Speech bubble
+  const bubble = { on:false, who:"", full:"", reveal:0, cps:18, ttl:0, done:false };
+  function say(who, text, ttl=6.8, cps=18){
     bubble.on=true; bubble.who=who; bubble.full=String(text);
     bubble.reveal=0; bubble.cps=cps; bubble.ttl=ttl; bubble.done=false;
   }
@@ -351,40 +359,49 @@
     }
   }
 
-  // ===== Input =====
+  // Input
   const keys = {};
   window.addEventListener("keydown",(e)=>{
-    keys[e.key.toLowerCase()]=true;
-    if(!audioReady) initAudio();
-    if(!started){ start(); return; }
+    keys[e.key.toLowerCase()] = true;
+    if(!started){ initSfx(); startBackgroundMusic(); start(); return; }
     if(e.key.toLowerCase()==="e") interact();
   });
-  window.addEventListener("keyup",(e)=> keys[e.key.toLowerCase()]=false);
+  window.addEventListener("keyup",(e)=> keys[e.key.toLowerCase()] = false);
 
+  // Mobile d-pad
   let touchDir={dx:0,dy:0}, touchHeld=false;
   function bindHold(btn,dir){
-    const start=(ev)=>{ ev.preventDefault(); if(!audioReady) initAudio(); if(!started) start();
+    const startHold=(ev)=>{
+      ev.preventDefault();
+      if(!started){ initSfx(); startBackgroundMusic(); start(); return; }
       touchHeld=true; touchDir={dx:0,dy:0};
       if(dir==="up") touchDir.dy=-1;
       if(dir==="down") touchDir.dy=1;
       if(dir==="left") touchDir.dx=-1;
       if(dir==="right") touchDir.dx=1;
     };
-    const end=(ev)=>{ ev.preventDefault(); touchHeld=false; touchDir={dx:0,dy:0}; };
-    btn.addEventListener("pointerdown",start);
-    btn.addEventListener("pointerup",end);
-    btn.addEventListener("pointercancel",end);
-    btn.addEventListener("pointerleave",end);
-    btn.addEventListener("touchstart",start,{passive:false});
-    btn.addEventListener("touchend",end,{passive:false});
+    const endHold=(ev)=>{ ev.preventDefault(); touchHeld=false; touchDir={dx:0,dy:0}; };
+    btn.addEventListener("pointerdown",startHold);
+    btn.addEventListener("pointerup",endHold);
+    btn.addEventListener("pointercancel",endHold);
+    btn.addEventListener("pointerleave",endHold);
+    btn.addEventListener("touchstart",startHold,{passive:false});
+    btn.addEventListener("touchend",endHold,{passive:false});
   }
-  const pad=document.getElementById("pad");
-  if(pad){
-    pad.querySelectorAll("button[data-dir]").forEach(b=>bindHold(b, b.getAttribute("data-dir")));
-  }
-  const btnE=document.getElementById("btnE");
-  btnE.addEventListener("pointerdown",(ev)=>{ ev.preventDefault(); if(!audioReady) initAudio(); if(!started){start(); return;} interact(); });
-  btnE.addEventListener("touchstart",(ev)=>{ ev.preventDefault(); if(!audioReady) initAudio(); if(!started){start(); return;} interact(); },{passive:false});
+  const pad = document.getElementById("pad");
+  if(pad) pad.querySelectorAll("button[data-dir]").forEach(b=>bindHold(b, b.getAttribute("data-dir")));
+
+  const btnE = document.getElementById("btnE");
+  btnE.addEventListener("pointerdown",(ev)=>{
+    ev.preventDefault();
+    if(!started){ initSfx(); startBackgroundMusic(); start(); return; }
+    interact();
+  });
+  btnE.addEventListener("touchstart",(ev)=>{
+    ev.preventDefault();
+    if(!started){ initSfx(); startBackgroundMusic(); start(); return; }
+    interact();
+  },{passive:false});
 
   function desiredDir(){
     let dx=0,dy=0;
@@ -396,73 +413,60 @@
     return {dx,dy};
   }
 
-  function resetShow(){
-    act.phase = "free";
-    act.t = 0;
-    actPill.textContent = "Act: Festival";
-    statusEl.textContent = "Walk to the center stage to start the Lion Dance.";
-
-    lion.visible = true;
-
-    choco.visible = false;
-    choco.yOff = 0;
-
-    dragon.visible = false;
-    dragon.carrying = false;
-    dragon.x = -260;
-    dragon.y = 170;
-
-    fireworks.length = 0;
-    confetti.length = 0;
-
-    droppedEnvelope.active = false;
-    droppedEnvelope.landed = false;
-  }
-
   function interact(){
-    // If envelope is open, close it instead of interacting
-if(envelopeOpen){
-  closeEnvelopeImage();
-  return;
-}
+    // Close envelope overlay with Talk
+    if(envelopeOpen){ closeEnvelopeImage(); return; }
+
     if(bubble.on && !bubble.done && bubble.reveal < bubble.full.length){ finishBubble(); return; }
 
-    // replay after finale (talk near stage)
-    if(act.phase==="finale" && dist(player.x,player.y, stage.x,stage.y) < stage.r+30){
-      resetShow();
-      startLionDance();
-      return;
-    }
-
-    // envelope interaction
+    // open envelope if nearby (allow even while falling)
     if(droppedEnvelope.active && dist(player.x,player.y, droppedEnvelope.x, droppedEnvelope.y) < 56){
-  openEnvelopeImage();
-  return;
+      openEnvelopeImage();
+      return;
     }
 
-    if(act.phase==="free" && dist(player.x,player.y, stage.x,stage.y) < stage.r+22){
+    // start lion dance
+    if(act.phase==="free" && dist(player.x,player.y, stage.x,stage.y) < stage.r+24){
       startLionDance();
       return;
+    }
+
+    // replay if finale and near stage
+    if(act.phase==="finale" && dist(player.x,player.y, stage.x,stage.y) < stage.r+34){
+      resetShow(); startLionDance(); return;
     }
 
     if(act.phase==="free"){
-      say("Festival", "The air smells like sweets and tea. Lanterns glow by the lake.", 7.0, 18);
+      say("Festival","Night lanterns glow! Drums, snacks, and chaos. 🏮",6.8,16);
+    } else if(act.phase==="dragon"){
+      say("Festival","DRAGON DELIVERY SERVICE!!",4.5,18);
     }
   }
 
+  function resetShow(){
+    act.phase="free"; act.t=0;
+    setAct("Act: Festival");
+    setStatus("Walk to the center stage and press Talk (E) to start the Lion Dance.");
+    lion.visible=true;
+    choco.visible=false; choco.yOff=0;
+    dragon.visible=false; dragon.carrying=false; dragon.x=-260; dragon.y=170;
+    fireworks.length=0; confetti.length=0;
+    droppedEnvelope.active=false; droppedEnvelope.landed=false;
+    skyFlight.active=false; skyFlight.t=0;
+  }
+
   function startLionDance(){
-    act.phase="lion";
-    act.t=0;
-    actPill.textContent="Act: Lion Dance";
-    statusEl.textContent="Lion Dance begins! Watch the center!";
-    say("Drums", "DUM—DUM—DUM! 🥁", 3.0, 18);
+    act.phase="lion"; act.t=0;
+    setAct("Act: Lion Dance");
+    setStatus("Lion Dance begins! Watch the center!");
+    say("Drums","DUM—DUM—DUM! 🥁",3.0,16);
     burstConfetti(stage.x, stage.y+40);
     spawnFirework(stage.x+120, 120);
     setTimeout(()=>spawnFirework(stage.x-160, 150), 400);
     setTimeout(()=>spawnFirework(stage.x+40, 110), 800);
   }
 
-  // ===== Drawing helpers =====
+  // Drawing helpers
   function roundRect(x,y,w,h,r,fill,stroke){
     ctx.beginPath();
     ctx.moveTo(x+r,y);
@@ -475,607 +479,410 @@ if(envelopeOpen){
     if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=1; ctx.stroke(); }
   }
 
-  // ===== Background (REFERENCE AESTHETIC; screen space) =====
+  
+  // NIGHT background (screen space)
   function drawBackground(t){
-    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const w=canvas.clientWidth, h=canvas.clientHeight;
 
-    // warm sunset sky
-    const sky = ctx.createLinearGradient(0,0,0,h);
-    sky.addColorStop(0.00, "#ffd7b0");
-    sky.addColorStop(0.30, "#f5b7b8");
-    sky.addColorStop(0.62, "#d7c7b5");
-    sky.addColorStop(1.00, "#e9dfd2");
-    ctx.fillStyle = sky;
+    // deep night sky
+    const sky=ctx.createLinearGradient(0,0,0,h);
+    sky.addColorStop(0,"#0b1026");
+    sky.addColorStop(0.38,"#121a3a");
+    sky.addColorStop(0.72,"#1a2340");
+    sky.addColorStop(1,"#262a3a");
+    ctx.fillStyle=sky; 
     ctx.fillRect(0,0,w,h);
 
-    // sun bloom
-    ctx.fillStyle = "rgba(255,255,255,.30)";
-    ctx.beginPath();
-    ctx.ellipse(w*0.12, h*0.12, 170, 120, 0, 0, Math.PI*2);
-    ctx.fill();
+    // moon
+    ctx.fillStyle="rgba(255,245,220,.22)";
+    ctx.beginPath(); ctx.ellipse(w*0.14,h*0.16,110,90,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(255,245,220,.68)";
+    ctx.beginPath(); ctx.ellipse(w*0.15,h*0.15,42,36,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(0,0,0,.08)";
+    ctx.beginPath(); ctx.ellipse(w*0.145,h*0.145,10,8,0,0,Math.PI*2); ctx.fill();
 
-    // distant mountains
-    ctx.fillStyle = "rgba(140,110,120,.20)";
-    ctx.beginPath();
-    ctx.moveTo(0, h*0.36);
-    ctx.quadraticCurveTo(w*0.22, h*0.24, w*0.46, h*0.34);
-    ctx.quadraticCurveTo(w*0.72, h*0.18, w, h*0.30);
-    ctx.lineTo(w, h*0.46);
-    ctx.lineTo(0, h*0.46);
-    ctx.closePath();
-    ctx.fill();
-
-    // treeline strip
-    ctx.fillStyle = "rgba(40,85,60,.40)";
-    ctx.beginPath();
-    ctx.moveTo(0, h*0.44);
-    for(let x=0;x<=w;x+=70){
-      ctx.quadraticCurveTo(x+35, h*0.40 + Math.sin(t*0.2+x*0.02)*8, x+70, h*0.44);
+    // stars twinkle
+    for(let i=0;i<140;i++){
+      const x=(i*73)%w;
+      const y=(i*41)%Math.floor(h*0.42);
+      const tw=0.35+(Math.sin(t*2+i)*0.5+0.5)*0.55;
+      ctx.globalAlpha=0.12+tw*0.55;
+      ctx.fillStyle="rgba(255,255,255,.95)";
+      ctx.fillRect(x,y,2,2);
+      if(i%9===0) ctx.fillRect(x+2,y+1,1,1);
     }
-    ctx.lineTo(w, h*0.56);
-    ctx.lineTo(0, h*0.56);
-    ctx.closePath();
-    ctx.fill();
+    ctx.globalAlpha=1;
+
+    // mountains + treeline
+    ctx.fillStyle="rgba(10,15,30,.55)";
+    ctx.beginPath();
+    ctx.moveTo(0,h*0.40);
+    ctx.quadraticCurveTo(w*0.22,h*0.28,w*0.46,h*0.38);
+    ctx.quadraticCurveTo(w*0.72,h*0.22,w,h*0.34);
+    ctx.lineTo(w,h*0.52); ctx.lineTo(0,h*0.52);
+    ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle="rgba(10,25,22,.65)";
+    ctx.beginPath();
+    ctx.moveTo(0,h*0.48);
+    for(let xx=0;xx<=w;xx+=70){
+      ctx.quadraticCurveTo(xx+35,h*0.44+Math.sin(t*0.2+xx*0.02)*8,xx+70,h*0.48);
+    }
+    ctx.lineTo(w,h*0.62); ctx.lineTo(0,h*0.62);
+    ctx.closePath(); ctx.fill();
 
     // lake
-    const lake = ctx.createLinearGradient(0,h*0.46,0,h*0.62);
-    lake.addColorStop(0,"rgba(170,190,190,.50)");
-    lake.addColorStop(1,"rgba(190,205,200,.30)");
-    ctx.fillStyle = lake;
-    ctx.fillRect(0, h*0.46, w, h*0.18);
+    const lake=ctx.createLinearGradient(0,h*0.50,0,h*0.66);
+    lake.addColorStop(0,"rgba(40,70,80,.40)");
+    lake.addColorStop(1,"rgba(20,40,50,.32)");
+    ctx.fillStyle=lake; 
+    ctx.fillRect(0,h*0.50,w,h*0.18);
 
-    // shimmer
-    ctx.fillStyle="rgba(255,255,255,.12)";
-    for(let i=0;i<90;i++){
-      const x = (i*37)%w;
-      const y = h*0.50 + ((i*19)%70);
-      ctx.fillRect(x, y, 20, 1);
-    }
-
-    // tiny bird
-    ctx.strokeStyle="rgba(60,40,50,.35)";
-    ctx.lineWidth=2;
-    ctx.beginPath();
-    ctx.moveTo(w*0.78, h*0.10);
-    ctx.quadraticCurveTo(w*0.80, h*0.085, w*0.82, h*0.10);
-    ctx.stroke();
-  }
-
-  // ===== Town/Yard (world coords; like reference) =====
-  function drawTown(t){
-    const W = world.w, H = world.h;
-
-    // grass yard
-    ctx.fillStyle = "#6ea35c";
-    ctx.fillRect(0, yardTop, W, H-yardTop);
-
-    // painterly texture
-    for(let y=yardTop; y<H; y+=8){
-      for(let x=0; x<W; x+=22){
-        const sway = Math.sin(t*1.2 + x*0.02 + y*0.03)*2;
-        ctx.fillStyle = "rgba(0,0,0,.05)";
-        ctx.fillRect(x + (y%16?8:0), y+sway, 14, 2);
-        ctx.fillStyle = "rgba(255,255,255,.06)";
-        ctx.fillRect(x + 3, y+sway+3, 10, 1);
-      }
-    }
-
-    // fence line
-    ctx.fillStyle="rgba(0,0,0,.10)";
-    ctx.fillRect(0, fenceY+18, W, 6);
-
-    roundRect(0, fenceY, W, 26, 0, "rgba(145,95,60,.78)", "rgba(0,0,0,.18)");
-    for(let x=0; x<W; x+=18){
-      roundRect(x+4, fenceY-12, 10, 34, 3, "rgba(160,105,70,.82)", "rgba(0,0,0,.18)");
-      ctx.fillStyle="rgba(255,255,255,.10)";
-      ctx.fillRect(x+6, fenceY-8, 6, 2);
-    }
-
-    // lamp post
-    const lampX = W*0.18, lampY = fenceY+6;
-    roundRect(lampX-4, lampY-48, 8, 56, 3, "rgba(90,70,55,.80)", "rgba(0,0,0,.18)");
-    roundRect(lampX-16, lampY-68, 32, 26, 8, "rgba(170,130,90,.75)", "rgba(0,0,0,.18)");
-    ctx.fillStyle="rgba(255,220,140,.28)";
-    ctx.beginPath(); ctx.ellipse(lampX, lampY-55, 46, 34, 0, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle="rgba(255,240,200,.60)";
-    ctx.beginPath(); ctx.ellipse(lampX, lampY-55, 16, 12, 0, 0, Math.PI*2); ctx.fill();
-
-    // foreground vignette
-    const gg = ctx.createLinearGradient(0, H*0.72, 0, H);
-    gg.addColorStop(0, "rgba(0,0,0,0)");
-    gg.addColorStop(1, "rgba(0,0,0,.10)");
-    ctx.fillStyle = gg;
-    ctx.fillRect(0, yardTop, W, H-yardTop);
-
-    // bushes/trees with fruit (cozy)
-    function bush(x,y,scale,fruit){
-      const sway = Math.sin(t*1.4 + x*0.01)*2;
-      ctx.fillStyle="rgba(0,0,0,.12)";
-      ctx.beginPath(); ctx.ellipse(x, y+42*scale, 44*scale, 10*scale, 0, 0, Math.PI*2); ctx.fill();
-
-      roundRect(x-52*scale, y-18*scale+sway, 104*scale, 78*scale, 26*scale, "rgba(40,95,60,.85)", "rgba(0,0,0,.20)");
-      roundRect(x-40*scale, y-10*scale+sway, 80*scale, 56*scale, 22*scale, "rgba(70,140,80,.50)", null);
-
-      if(fruit){
-        const colors = fruit==="apple" ? "rgba(210,70,70,.85)" : "rgba(255,190,70,.85)";
-        ctx.fillStyle = colors;
-        for(let i=0;i<10;i++){
-          const fx = x + (Math.sin(i*12.3)*36*scale);
-          const fy = y + (Math.cos(i*9.1)*18*scale) + sway;
-          ctx.beginPath(); ctx.ellipse(fx, fy, 4*scale, 4*scale, 0,0,Math.PI*2); ctx.fill();
-        }
-      }
-    }
-    bush(W*0.22, H*0.72, 1.0, "orange");
-    bush(W*0.68, H*0.72, 1.05, "apple");
-    bush(W*0.88, H*0.64, 1.25, null);
-
-    // big right foreground tree (like reference framing)
-    function bigTree(){
-      const x = W*0.96, y = H*0.60;
-      const sway = Math.sin(t*0.8)*2;
-      // trunk
-      ctx.fillStyle="rgba(120,85,60,.85)";
-      roundRect(x-60, y+20, 80, 220, 26, "rgba(120,85,60,.85)", "rgba(0,0,0,.18)");
-      ctx.fillStyle="rgba(255,255,255,.08)";
-      ctx.fillRect(x-30, y+50, 10, 120);
-
-      // canopy
-      ctx.fillStyle="rgba(40,95,60,.90)";
-      ctx.beginPath(); ctx.ellipse(x-40, y-20+sway, 120, 100, 0, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle="rgba(70,140,80,.55)";
-      ctx.beginPath(); ctx.ellipse(x-70, y-30+sway, 90, 70, 0, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(x-10, y-40+sway, 90, 70, 0, 0, Math.PI*2); ctx.fill();
-
-      // falling petals/leaf dots
-      ctx.fillStyle="rgba(255,220,140,.25)";
-      for(let i=0;i<16;i++){
-        ctx.fillRect(x-120 + (i*17)%120, y-10 + ((i*23)%90), 2, 2);
-      }
-    }
-    bigTree();
-
-    // flowers
+    // moon shimmer
     for(let i=0;i<70;i++){
-      const x = (i*97)%W;
-      const y = yardTop + 20 + ((i*53)%(H-yardTop-40));
-      ctx.fillStyle = (i%3===0) ? "rgba(255,240,255,.70)" : "rgba(255,220,140,.55)";
-      ctx.fillRect(x, y, 2, 2);
-      ctx.fillStyle="rgba(255,120,170,.35)";
-      if(i%7===0) ctx.fillRect(x+2, y+1, 2, 2);
+      const x=(i*43)%w;
+      const y=h*0.54+((i*29)%70);
+      ctx.globalAlpha=0.05+(Math.sin(t*1.8+i)*0.5+0.5)*0.10;
+      ctx.fillStyle="rgba(255,245,220,.10)";
+      ctx.fillRect(x,y,26,1);
+    }
+    ctx.globalAlpha=1;
+
+    // sky-flight silhouette (dragon + 🍫 shrinking into distance)
+    if(skyFlight.active){
+      const ss = skyFlight.scale;
+      const sx = skyFlight.x, sy = skyFlight.y;
+      const wv = Math.sin(t*6)*3*ss;
+
+      // faint trail
+      ctx.globalAlpha = 0.10;
+      ctx.strokeStyle = "rgba(255,220,140,.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(sx-50*ss, sy+10*ss);
+      ctx.quadraticCurveTo(sx-10*ss, sy-10*ss, sx+30*ss, sy+2*ss);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // dragon body
+      ctx.strokeStyle = "rgba(180,40,60,.90)";
+      ctx.lineWidth = Math.max(2, 6*ss);
+      ctx.beginPath();
+      ctx.moveTo(sx-60*ss, sy+10*ss+wv);
+      ctx.bezierCurveTo(sx-20*ss, sy-10*ss-wv, sx+10*ss, sy+14*ss+wv, sx+50*ss, sy-6*ss-wv);
+      ctx.stroke();
+
+      // head
+      ctx.fillStyle = "rgba(180,40,60,.95)";
+      ctx.beginPath();
+      ctx.ellipse(sx+54*ss, sy-10*ss-wv, 10*ss, 7*ss, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // 🍫 passenger
+      ctx.fillStyle = "rgba(110,60,40,.95)";
+      ctx.beginPath();
+      ctx.ellipse(sx+20*ss, sy+2*ss+wv*0.5, 6*ss, 6*ss, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,220,140,.22)";
+      ctx.beginPath();
+      ctx.ellipse(sx+20*ss, sy+2*ss+wv*0.5, 12*ss, 10*ss, 0, 0, Math.PI*2);
+      ctx.fill();
     }
 
-    // stage in the yard
-    ctx.fillStyle="rgba(180,40,60,.10)";
-    ctx.beginPath(); ctx.arc(stage.x, stage.y, 132, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle="rgba(255,220,140,.10)";
-    ctx.beginPath(); ctx.arc(stage.x, stage.y, 92, 0, Math.PI*2); ctx.fill();
-
-    // lanterns near stage
-    function lantern(x,y,ph){
-      const glow = 0.18 + (Math.sin(t*1.8+ph)+1)*0.06;
-      roundRect(x-12,y-12,24,28,10,"rgba(180,40,60,.92)","rgba(0,0,0,.18)");
-      ctx.fillStyle=`rgba(255,220,140,${glow})`;
-      ctx.beginPath(); ctx.ellipse(x, y+4, 18, 14, 0,0,Math.PI*2); ctx.fill();
-      ctx.strokeStyle="rgba(255,200,60,.65)";
-      ctx.lineWidth=2;
-      ctx.beginPath(); ctx.moveTo(x, y+18); ctx.lineTo(x, y+30); ctx.stroke();
-    }
-    lantern(stage.x-180, stage.y-50, 0);
-    lantern(stage.x+190, stage.y-44, 2);
-
-    // banner above stage
-    roundRect(stage.x-140, stage.y-200, 280, 44, 12, "rgba(180,40,60,.86)", "rgba(0,0,0,.18)");
-    ctx.fillStyle="rgba(255,220,140,.85)";
-    ctx.font="20px system-ui";
-    ctx.fillText("新年快乐", stage.x-60, stage.y-170);
-
-    // small log + bench detail (reference-y)
-    roundRect(W*0.32, H*0.84, 70, 24, 10, "rgba(125,90,65,.75)", "rgba(0,0,0,.18)");
-    ctx.fillStyle="rgba(0,0,0,.08)";
-    ctx.beginPath(); ctx.ellipse(W*0.32+10, H*0.84+12, 6, 5, 0, 0, Math.PI*2); ctx.fill();
+    // vignette
+    const vg=ctx.createRadialGradient(w*0.5,h*0.6,80,w*0.5,h*0.6,Math.max(w,h)*0.75);
+    vg.addColorStop(0,"rgba(0,0,0,0)");
+    vg.addColorStop(1,"rgba(0,0,0,.32)");
+    ctx.fillStyle=vg; 
+    ctx.fillRect(0,0,w,h);
   }
 
-  // ===== Characters (more Harvest-Moon-like) =====
-  // More "real" villagers: outlines, shading, simple hair styles, boots
-  function drawVillager(p, time){
+
+  // Town + lanterns (world coords)
+  function drawTown(t){
+    const W=world.w, H=world.h;
+
+    // grass base (night)
+    ctx.fillStyle="#2c5a3c";
+    ctx.fillRect(0,yardTop,W,H-yardTop);
+
+    // grass texture + wind
+    for(let y=yardTop;y<H;y+=8){
+      for(let x=0;x<W;x+=22){
+        const sway=Math.sin(t*1.4+x*0.02+y*0.03)*2;
+        ctx.fillStyle="rgba(0,0,0,.10)";
+        ctx.fillRect(x+(y%16?8:0), y+sway, 14, 2);
+        ctx.fillStyle="rgba(255,255,255,.04)";
+        ctx.fillRect(x+3, y+sway+3, 10, 1);
+      }
+    }
+
+    // subtle blue tint wash
+    ctx.fillStyle="rgba(20,30,55,.18)";
+    ctx.fillRect(0, yardTop, W, H-yardTop);
+
+    // fence
+    ctx.fillStyle="rgba(0,0,0,.18)";
+    ctx.fillRect(0, fenceY+18, W, 6);
+    roundRect(0,fenceY,W,26,0,"rgba(130,85,55,.78)","rgba(0,0,0,.30)");
+    for(let x=0;x<W;x+=18){
+      roundRect(x+4,fenceY-12,10,34,3,"rgba(150,95,65,.82)","rgba(0,0,0,.30)");
+    }
+
+    // Lantern helper
+    function lantern(x,y,ph,scale=1){
+      const glow=0.18+(Math.sin(t*1.9+ph)+1)*0.06;
+      roundRect(x-12*scale,y-12*scale,24*scale,28*scale,10*scale,"rgba(180,40,60,.95)","rgba(0,0,0,.30)");
+      ctx.fillStyle=`rgba(255,220,140,${glow+0.10})`;
+      ctx.beginPath(); ctx.ellipse(x,y+4*scale,18*scale,14*scale,0,0,Math.PI*2); ctx.fill();
+      const tass=Math.sin(t*3+ph)*2*scale;
+      ctx.strokeStyle="rgba(255,200,60,.70)";
+      ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(x,y+18*scale); ctx.lineTo(x+tass,y+30*scale); ctx.stroke();
+
+      const rg=ctx.createRadialGradient(x,y+40*scale,10,x,y+40*scale,130*scale);
+      rg.addColorStop(0,"rgba(255,220,140,.22)");
+      rg.addColorStop(1,"rgba(255,220,140,0)");
+      ctx.fillStyle=rg;
+      ctx.beginPath(); ctx.ellipse(x,y+70*scale,160*scale,90*scale,0,0,Math.PI*2); ctx.fill();
+    }
+    function lanternString(x0,y0,x1,y1,count,ph){
+      ctx.strokeStyle="rgba(255,220,140,.22)";
+      ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+      for(let i=0;i<count;i++){
+        const u=(i+1)/(count+1);
+        const x=x0+(x1-x0)*u;
+        const y=y0+(y1-y0)*u + Math.sin(t*1.2+u*6+ph)*2;
+        lantern(x,y,ph+i*0.7,0.85);
+      }
+    }
+
+    // stage glow ring
+    ctx.fillStyle="rgba(255,220,140,.08)";
+    ctx.beginPath(); ctx.arc(stage.x,stage.y,132,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(180,40,60,.10)";
+    ctx.beginPath(); ctx.arc(stage.x,stage.y,92,0,Math.PI*2); ctx.fill();
+
+    // stage banner (waving)
+    const wave=Math.sin(t*2)*3;
+    roundRect(stage.x-140, stage.y-200+wave, 280, 44, 12, "rgba(180,40,60,.90)", "rgba(0,0,0,.30)");
+    ctx.fillStyle="rgba(255,220,140,.90)";
+    ctx.font="20px system-ui";
+    ctx.fillText("新年快乐", stage.x-60, stage.y-170+wave);
+
+    // lanterns around stage + town
+    lantern(stage.x-180, stage.y-50, 0, 1);
+    lantern(stage.x+190, stage.y-44, 2, 1);
+    lantern(W*0.14, yardTop+70, 3.1, 0.9);
+    lantern(W*0.30, yardTop+90, 4.4, 0.8);
+    lantern(W*0.76, yardTop+85, 5.2, 0.85);
+    lantern(W*0.56, yardTop+110, 6.0, 0.8);
+    lanternString(W*0.08, fenceY-40, W*0.46, fenceY-70, 6, 1.3);
+    lanternString(W*0.52, fenceY-70, W*0.92, fenceY-40, 6, 2.1);
+
+    // bushes
+    function bush(x,y,scale){
+      const sway=Math.sin(t*1.2+x*0.01)*3;
+      ctx.fillStyle="rgba(0,0,0,.18)";
+      ctx.beginPath(); ctx.ellipse(x,y+42*scale,44*scale,10*scale,0,0,Math.PI*2); ctx.fill();
+      roundRect(x-52*scale,y-18*scale+sway,104*scale,78*scale,26*scale,"rgba(30,90,55,.85)","rgba(0,0,0,.30)");
+      roundRect(x-40*scale,y-10*scale+sway,80*scale,56*scale,22*scale,"rgba(70,140,80,.30)",null);
+    }
+    bush(W*0.22, H*0.72, 1.0);
+    bush(W*0.70, H*0.72, 1.05);
+  }
+
+  // Crowd drawing
+  function drawPerson(p, t){
     const x=p.x, y=p.y;
-    const bob=Math.sin((p.t||0)+time*2.0)*1.2;
+    const bob=Math.sin(p.t + t*2.2)*1.2;
 
-    const outline="rgba(0,0,0,.20)";
-    const skin="rgba(255,224,198,.95)";
+    ctx.fillStyle="rgba(0,0,0,.22)";
+    ctx.beginPath(); ctx.ellipse(x, y+14, 16, 5, 0,0,Math.PI*2); ctx.fill();
 
-    // shadow
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y+14, 17, 5, 0, 0, Math.PI*2); ctx.fill();
-
-    // boots
-    ctx.fillStyle="rgba(70,50,45,.65)";
-    roundRect(x-10, y+9, 8, 6, 2, "rgba(70,50,45,.65)", outline);
-    roundRect(x+2,  y+9, 8, 6, 2, "rgba(70,50,45,.65)", outline);
-
-    // legs
-    ctx.fillStyle="rgba(120,110,120,.25)";
-    roundRect(x-8, y+2, 6, 10, 2, "rgba(120,110,120,.25)", null);
-    roundRect(x+2, y+2, 6, 10, 2, "rgba(120,110,120,.25)", null);
-
-    // body (jacket)
-    roundRect(x-12, y-10+bob, 24, 24, 7, p.col, outline);
-    // shirt highlight
-    roundRect(x-7, y-6+bob, 14, 16, 6, "rgba(255,255,255,.55)", "rgba(0,0,0,.06)");
-    // belt
-    ctx.fillStyle="rgba(255,220,140,.55)";
-    ctx.fillRect(x-10, y+5+bob, 20, 3);
-
-    // arms
-    ctx.strokeStyle=outline;
+    ctx.strokeStyle="rgba(0,0,0,.28)";
     ctx.lineWidth=3;
     ctx.beginPath();
-    ctx.moveTo(x-12, y-1+bob); ctx.lineTo(x-18, y+3+bob);
-    ctx.moveTo(x+12, y-1+bob); ctx.lineTo(x+18, y+3+bob);
+    ctx.moveTo(x-4, y+6); ctx.lineTo(x-4, y+14);
+    ctx.moveTo(x+4, y+6); ctx.lineTo(x+4, y+14);
     ctx.stroke();
 
-    // hands
-    ctx.fillStyle=skin;
-    ctx.beginPath(); ctx.ellipse(x-18, y+3+bob, 2.5, 2.5, 0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x+18, y+3+bob, 2.5, 2.5, 0,0,Math.PI*2); ctx.fill();
+    roundRect(x-11, y-10+bob, 22, 22, 6, p.col, "rgba(0,0,0,.28)");
+    ctx.fillStyle="rgba(255,220,140,.20)";
+    ctx.fillRect(x-9, y+3+bob, 18, 3);
 
-    // head
-    ctx.fillStyle=skin;
-    ctx.beginPath(); ctx.ellipse(x, y-22+bob, 10, 10, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle=outline; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle="rgba(255,220,190,.95)";
+    ctx.beginPath(); ctx.ellipse(x, y-20+bob, 10, 10, 0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle="rgba(0,0,0,.22)"; ctx.lineWidth=1; ctx.stroke();
 
-    // hair (few styles)
-    const hairColors = ["rgba(60,40,35,.80)","rgba(30,25,20,.80)","rgba(95,60,30,.75)","rgba(45,35,60,.75)","rgba(120,80,40,.68)"];
-    const hc = hairColors[p.seed % hairColors.length];
-    ctx.fillStyle=hc;
+    roundRect(x-10, y-28+bob, 20, 10, 5, "rgba(40,20,30,.55)", "rgba(0,0,0,.10)");
 
-    const style = p.seed % 4;
-    if(style===0){
-      roundRect(x-11, y-30+bob, 22, 12, 6, hc, "rgba(0,0,0,.10)");
-      ctx.beginPath(); ctx.ellipse(x, y-28+bob, 10, 6, 0,0,Math.PI*2); ctx.fill();
-    } else if(style===1){
-      roundRect(x-12, y-30+bob, 24, 12, 6, hc, "rgba(0,0,0,.10)");
-      roundRect(x-14, y-26+bob, 8, 18, 6, hc, null);
-      roundRect(x+6,  y-26+bob, 8, 18, 6, hc, null);
-    } else if(style===2){
-      roundRect(x-10, y-31+bob, 20, 10, 6, hc, "rgba(0,0,0,.10)");
-      ctx.beginPath(); ctx.ellipse(x-4, y-27+bob, 8, 5, 0,0,Math.PI*2); ctx.fill();
-    } else {
-      roundRect(x-10, y-31+bob, 20, 10, 6, hc, "rgba(0,0,0,.10)");
-      ctx.beginPath(); ctx.ellipse(x, y-26+bob, 10, 6, 0,0,Math.PI*2); ctx.fill();
-      // little hat
-      ctx.fillStyle="rgba(180,40,60,.65)";
-      roundRect(x-10, y-36+bob, 20, 7, 4, "rgba(180,40,60,.65)", "rgba(0,0,0,.12)");
-    }
-
-    // face
     ctx.fillStyle="rgba(40,20,30,.70)";
-    ctx.beginPath(); ctx.ellipse(x-3, y-22+bob, 1.5, 1.5, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x+3, y-22+bob, 1.5, 1.5, 0, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y-18+bob, 4, 1.6, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x-3, y-20+bob, 1.6, 1.6, 0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x+3, y-20+bob, 1.6, 1.6, 0,0,Math.PI*2); ctx.fill();
   }
 
-  // Zodiac animals (more “sprite animal”)
-  function drawZodiac(z, time){
+  function drawZodiac(z, t){
     const x=z.x, y=z.y;
-    const bob=Math.sin(time*2.0 + z.t)*2.5;
+    const bob=Math.sin(t*2.1 + z.t)*3;
 
-    const outline="rgba(0,0,0,.20)";
-    const fur="rgba(255,255,255,.85)";
-    const fur2="rgba(235,235,235,.85)";
-    const red="rgba(180,40,60,.78)";
-    const gold="rgba(255,220,140,.75)";
-    const dark="rgba(40,20,30,.65)";
+    ctx.fillStyle="rgba(0,0,0,.22)";
+    ctx.beginPath(); ctx.ellipse(x, y+14, 16, 5, 0,0,Math.PI*2); ctx.fill();
 
-    // shadow
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y+14, 16, 5, 0, 0, Math.PI*2); ctx.fill();
+    roundRect(x-14, y-10+bob, 28, 18, 7, "rgba(255,255,255,.85)", "rgba(0,0,0,.28)");
+    roundRect(x-10, y-24+bob, 20, 14, 7, "rgba(255,255,255,.85)", "rgba(0,0,0,.28)");
 
-    ctx.save();
-    ctx.translate(x, y-2+bob);
+    ctx.fillStyle="rgba(40,20,30,.70)";
+    ctx.beginPath(); ctx.ellipse(x-4, y-18+bob, 1.8, 1.8, 0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x+4, y-18+bob, 1.8, 1.8, 0,0,Math.PI*2); ctx.fill();
 
-    // body
-    roundRect(-14,-8,28,18,7,fur,outline);
-    roundRect(-12,-6,24,14,6,fur2,null);
-
-    // head
-    roundRect(-10,-18,20,14,7,fur,outline);
-
-    // eyes
-    ctx.fillStyle=dark;
-    ctx.beginPath(); ctx.ellipse(-4,-12,1.8,1.8,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(4,-12,1.8,1.8,0,0,Math.PI*2); ctx.fill();
-
-    // nose
-    ctx.fillStyle="rgba(0,0,0,.10)";
-    ctx.beginPath(); ctx.ellipse(0,-9,2.2,1.6,0,0,Math.PI*2); ctx.fill();
-
-    // little scarf / accessory (varies)
-    switch(z.kind){
-      case "rat":
-        roundRect(-16,-16,6,6,3,red,outline);
-        roundRect(10,-16,6,6,3,red,outline);
-        ctx.strokeStyle="rgba(180,40,60,.45)";
-        ctx.lineWidth=3;
-        ctx.beginPath(); ctx.moveTo(12,2); ctx.quadraticCurveTo(22,6,16,12); ctx.stroke();
-        break;
-      case "ox":
-        ctx.fillStyle=gold;
-        ctx.beginPath(); ctx.ellipse(-12,-20,7,5,-0.5,0,Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(12,-20,7,5,0.5,0,Math.PI*2); ctx.fill();
-        break;
-      case "tiger":
-        ctx.fillStyle=red;
-        ctx.fillRect(-10,-4,20,2);
-        ctx.fillRect(-10,1,20,2);
-        ctx.fillRect(-8,-14,16,2);
-        break;
-      case "rabbit":
-        roundRect(-8,-30,6,16,4,red,outline);
-        roundRect(2,-30,6,16,4,red,outline);
-        break;
-      case "dragon":
-        roundRect(-16,-10,32,10,8,red,outline);
-        ctx.fillStyle=gold;
-        ctx.beginPath(); ctx.ellipse(10,-22,6,6,0,0,Math.PI*2); ctx.fill();
-        break;
-      case "snake":
-        roundRect(-18,-6,36,10,10,red,outline);
-        break;
-      case "horse":
-        roundRect(6,-18,10,12,6,red,outline);
-        ctx.fillStyle=gold;
-        ctx.beginPath(); ctx.ellipse(-10,-20,6,6,0,0,Math.PI*2); ctx.fill();
-        break;
-      case "goat":
-        ctx.fillStyle=gold;
-        ctx.beginPath(); ctx.ellipse(-10,-22,5,5,0,0,Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(10,-22,5,5,0,0,Math.PI*2); ctx.fill();
-        break;
-      case "monkey":
-        ctx.fillStyle=red;
-        ctx.beginPath(); ctx.ellipse(18,-2,6,6,0,0,Math.PI*2); ctx.fill();
-        break;
-      case "rooster":
-        ctx.fillStyle=red;
-        ctx.beginPath(); ctx.ellipse(0,-24,7,6,0,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle=gold;
-        ctx.beginPath(); ctx.ellipse(10,-10,4,3,0,0,Math.PI*2); ctx.fill();
-        break;
-      case "dog":
-        roundRect(-16,-16,7,10,4,red,outline);
-        roundRect(9,-16,7,10,4,red,outline);
-        break;
-      case "pig":
-        roundRect(-7,-8,14,10,6,red,outline);
-        ctx.fillStyle="rgba(255,255,255,.65)";
-        ctx.beginPath(); ctx.ellipse(-2,-3,1.6,1.6,0,0,Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(2,-3,1.6,1.6,0,0,Math.PI*2); ctx.fill();
-        break;
-    }
-
-    ctx.restore();
+    roundRect(x-8, y-6+bob, 16, 6, 4, "rgba(180,40,60,.85)", "rgba(0,0,0,.18)");
   }
 
-  // Potato in red dress (slightly more detailed)
-  function drawPotato(time){
+  // Potato + show characters
+  function drawPotato(t){
     const x=player.x, y=player.y;
-    const step = Math.sin(player.walk)*1.2;
-    const outline="rgba(0,0,0,.18)";
+    const step=Math.sin(player.walk)*1.1;
+    const hairSway=Math.sin(t*2.2+player.walk*0.15)*3;
 
-    // shadow
-    ctx.fillStyle="rgba(0,0,0,.12)";
+    ctx.fillStyle="rgba(0,0,0,.22)";
     ctx.beginPath(); ctx.ellipse(x,y+18,22,7,0,0,Math.PI*2); ctx.fill();
 
-    // legs + shoes
-    ctx.strokeStyle=outline;
+    ctx.strokeStyle="rgba(0,0,0,.28)";
     ctx.lineWidth=3;
     ctx.beginPath();
-    ctx.moveTo(x-7, y+10); ctx.lineTo(x-7, y+18 + step);
-    ctx.moveTo(x+7, y+10); ctx.lineTo(x+7, y+18 - step);
+    ctx.moveTo(x-6,y+10); ctx.lineTo(x-6,y+18+step);
+    ctx.moveTo(x+6,y+10); ctx.lineTo(x+6,y+18-step);
     ctx.stroke();
-    ctx.fillStyle="rgba(70,50,45,.70)";
-    roundRect(x-12, y+16, 10, 6, 3, "rgba(70,50,45,.70)", "rgba(0,0,0,.10)");
-    roundRect(x+2,  y+16, 10, 6, 3, "rgba(70,50,45,.70)", "rgba(0,0,0,.10)");
 
-    // body (potato)
-    ctx.fillStyle="rgba(225,175,120,.96)";
-    ctx.beginPath(); ctx.ellipse(x, y, 23, 27, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle="rgba(0,0,0,.10)"; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle="rgba(225,175,120,.95)";
+    ctx.beginPath(); ctx.ellipse(x,y,24,28,0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle="rgba(0,0,0,.28)"; ctx.lineWidth=1; ctx.stroke();
 
-    // dress
-    roundRect(x-21, y-2, 42, 31, 14, "rgba(180,40,60,.92)", "rgba(0,0,0,.14)");
+    roundRect(x-22,y-2,44,32,14,"rgba(180,40,60,.95)","rgba(0,0,0,.28)");
     ctx.fillStyle="rgba(255,220,140,.65)";
-    ctx.fillRect(x-17, y+7, 34, 3);
-    ctx.fillStyle="rgba(255,255,255,.22)";
-    ctx.beginPath(); ctx.ellipse(x-7, y+12, 9, 11, 0.2, 0, Math.PI*2); ctx.fill();
+    ctx.fillRect(x-18,y+7,36,3);
 
-    // arms
-    ctx.strokeStyle=outline;
+    ctx.strokeStyle="rgba(0,0,0,.26)";
     ctx.lineWidth=3;
     ctx.beginPath();
-    ctx.moveTo(x-18, y+2); ctx.lineTo(x-28, y+6 + step);
-    ctx.moveTo(x+18, y+2); ctx.lineTo(x+28, y+6 - step);
+    ctx.moveTo(x-19,y+2); ctx.lineTo(x-28,y+7+step);
+    ctx.moveTo(x+19,y+2); ctx.lineTo(x+28,y+7-step);
     ctx.stroke();
 
-    // hair
-    ctx.fillStyle="rgba(70,40,30,.80)";
-    ctx.beginPath(); ctx.ellipse(x, y-18, 23, 16, 0, 0, Math.PI*2); ctx.fill();
-    roundRect(x-23, y-18, 12, 38, 8, "rgba(55,30,22,.80)", "rgba(0,0,0,.06)");
-    roundRect(x+11, y-18, 12, 38, 8, "rgba(55,30,22,.80)", "rgba(0,0,0,.06)");
-
-    // face
-    ctx.fillStyle="rgba(40,20,30,.75)";
-    ctx.beginPath(); ctx.ellipse(x-6.5, y-6.5, 2.2, 2.2, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x+6.5, y-6.5, 2.2, 2.2, 0, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y-1, 5, 2, 0, 0, Math.PI*2); ctx.fill();
-
-    // hairpin
-    ctx.fillStyle="rgba(255,220,140,.80)";
-    roundRect(x+8, y-18, 11, 4, 3, "rgba(255,220,140,.80)", "rgba(0,0,0,.06)");
-  }
-
-  // Lion / 🍫 / Dragon (kept, slightly outlined)
-  function drawLion(time){
-    if(!lion.visible) return;
-    const x=lion.x, y=lion.y;
-    const wig = Math.sin(time*6)*6;
-    const hop = Math.abs(Math.sin(time*4))*10;
-    const outline="rgba(0,0,0,.18)";
-
-    ctx.fillStyle="rgba(0,0,0,.14)";
-    ctx.beginPath(); ctx.ellipse(x, y+44, 72, 16, 0, 0, Math.PI*2); ctx.fill();
-
-    roundRect(x-72, y-10+hop, 144, 72, 30, "rgba(255,255,255,.88)", outline);
-    roundRect(x-60, y+2+hop, 120, 18, 12, "rgba(180,40,60,.75)", "rgba(0,0,0,.10)");
-    ctx.fillStyle="rgba(255,220,140,.55)";
-    ctx.fillRect(x-44, y+10+hop, 88, 4);
-
-    roundRect(x-80+wig, y-52+hop, 88, 72, 26, "rgba(180,40,60,.92)", outline);
-    roundRect(x-68+wig, y-40+hop, 64, 48, 22, "rgba(255,255,255,.92)", "rgba(0,0,0,.10)");
+    ctx.fillStyle="rgba(70,40,30,.78)";
+    ctx.beginPath(); ctx.ellipse(x+hairSway*0.3,y-18,22,16,0,0,Math.PI*2); ctx.fill();
+    roundRect(x-23+hairSway*0.5,y-18,12,38,8,"rgba(55,30,22,.78)","rgba(0,0,0,.10)");
+    roundRect(x+11+hairSway*0.5,y-18,12,38,8,"rgba(55,30,22,.78)","rgba(0,0,0,.10)");
 
     ctx.fillStyle="rgba(40,20,30,.78)";
-    ctx.beginPath(); ctx.ellipse(x-48+wig, y-24+hop, 6.2, 6.2, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x-25+wig, y-24+hop, 6.2, 6.2, 0, 0, Math.PI*2); ctx.fill();
-
-    ctx.fillStyle="rgba(255,255,255,.70)";
-    ctx.beginPath(); ctx.ellipse(x-50+wig, y-26+hop, 2.2, 2.2, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x-27+wig, y-26+hop, 2.2, 2.2, 0, 0, Math.PI*2); ctx.fill();
-
-    roundRect(x-52+wig, y-12+hop, 40, 10, 8, "rgba(0,0,0,.10)", null);
-    roundRect(x-50+wig, y-10+hop, 36, 6, 6, "rgba(255,220,140,.5)", null);
-
-    ctx.strokeStyle="rgba(255,200,60,.65)";
-    ctx.lineWidth=3;
-    ctx.beginPath();
-    ctx.moveTo(x-80+wig, y-20+hop); ctx.lineTo(x-94+wig, y-2+hop);
-    ctx.moveTo(x+6+wig, y-20+hop); ctx.lineTo(x+20+wig, y-2+hop);
-    ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x-6,y-6,2.2,2.2,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x+6,y-6,2.2,2.2,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(0,0,0,.18)";
+    ctx.beginPath(); ctx.ellipse(x,y-1,5,2,0,0,Math.PI*2); ctx.fill();
   }
 
-  function drawChocolateMan(time){
+  function drawLion(t){
+    if(!lion.visible) return;
+    const x=lion.x, y=lion.y;
+    const wig=Math.sin(t*6)*6;
+    const hop=Math.abs(Math.sin(t*4))*10;
+
+    ctx.fillStyle="rgba(0,0,0,.26)";
+    ctx.beginPath(); ctx.ellipse(x,y+44,70,16,0,0,Math.PI*2); ctx.fill();
+
+    roundRect(x-74,y-10+hop,150,74,32,"rgba(255,255,255,.86)","rgba(0,0,0,.30)");
+    roundRect(x-62,y+2+hop,126,18,12,"rgba(180,40,60,.78)","rgba(0,0,0,.18)");
+    ctx.fillStyle="rgba(255,220,140,.55)";
+    ctx.fillRect(x-44,y+10+hop,88,4);
+
+    roundRect(x-82+wig,y-52+hop,90,74,26,"rgba(180,40,60,.95)","rgba(0,0,0,.30)");
+    roundRect(x-70+wig,y-40+hop,66,48,22,"rgba(255,255,255,.92)","rgba(0,0,0,.22)");
+
+    ctx.fillStyle="rgba(40,20,30,.78)";
+    ctx.beginPath(); ctx.ellipse(x-48+wig,y-22+hop,6,6,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x-26+wig,y-22+hop,6,6,0,0,Math.PI*2); ctx.fill();
+  }
+
+  function drawChocolate(t){
     if(!choco.visible) return;
     const x=choco.x, y=choco.y + choco.yOff;
-    const outline="rgba(0,0,0,.18)";
-
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y+18, 18, 6, 0, 0, Math.PI*2); ctx.fill();
-
-    roundRect(x-16, y-18, 32, 40, 12, "rgba(180,40,60,.92)", outline);
-    ctx.fillStyle="rgba(255,220,140,.65)";
-    ctx.fillRect(x-10, y-6, 20, 3);
-
-    ctx.fillStyle="rgba(110,60,40,.88)";
-    ctx.beginPath(); ctx.ellipse(x, y-26, 14, 14, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle=outline; ctx.lineWidth=1; ctx.stroke();
-
-    ctx.fillStyle="rgba(40,20,30,.58)";
-    ctx.beginPath(); ctx.ellipse(x, y-32, 14, 10, 0, 0, Math.PI*2); ctx.fill();
-
-    ctx.fillStyle="rgba(20,10,10,.35)";
-    ctx.beginPath(); ctx.ellipse(x-5, y-28, 2, 2, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(x+5, y-28, 2, 2, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(0,0,0,.22)";
+    ctx.beginPath(); ctx.ellipse(x,y+18,18,6,0,0,Math.PI*2); ctx.fill();
+    roundRect(x-16,y-18,32,40,12,"rgba(180,40,60,.95)","rgba(0,0,0,.30)");
+    ctx.fillStyle="rgba(110,60,40,.90)";
+    ctx.beginPath(); ctx.ellipse(x,y-26,14,14,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(40,20,30,.55)";
+    ctx.beginPath(); ctx.ellipse(x,y-32,14,10,0,0,Math.PI*2); ctx.fill();
   }
 
-  function drawDragon(time){
+  function drawDragon(t){
     if(!dragon.visible) return;
     const x=dragon.x, y=dragon.y;
-    const wave=Math.sin(time*6)*10;
-
-    ctx.strokeStyle="rgba(180,40,60,.86)";
+    const wave=Math.sin(t*6)*10;
+    ctx.strokeStyle="rgba(180,40,60,.90)";
     ctx.lineWidth=10;
     ctx.beginPath();
-    ctx.moveTo(x-120, y+wave);
-    ctx.bezierCurveTo(x-40, y-30-wave, x+40, y+30+wave, x+120, y-wave);
+    ctx.moveTo(x-120,y+wave);
+    ctx.bezierCurveTo(x-40,y-30-wave,x+40,y+30+wave,x+120,y-wave);
     ctx.stroke();
 
-    ctx.strokeStyle="rgba(255,220,140,.72)";
+    ctx.strokeStyle="rgba(255,220,140,.75)";
     ctx.lineWidth=6;
     ctx.beginPath();
-    ctx.moveTo(x-110, y+wave);
-    ctx.bezierCurveTo(x-36, y-22-wave, x+36, y+22+wave, x+110, y-wave);
+    ctx.moveTo(x-110,y+wave);
+    ctx.bezierCurveTo(x-36,y-22-wave,x+36,y+22+wave,x+110,y-wave);
     ctx.stroke();
 
-    roundRect(x+108, y-18-wave, 44, 30, 14, "rgba(180,40,60,.92)", "rgba(0,0,0,.14)");
-    ctx.fillStyle="rgba(255,220,140,.65)";
-    ctx.beginPath(); ctx.ellipse(x+142, y-8-wave, 10, 8, 0, 0, Math.PI*2); ctx.fill();
-
-    ctx.fillStyle="rgba(40,20,30,.70)";
-    ctx.beginPath(); ctx.ellipse(x+136, y-10-wave, 2, 2, 0, 0, Math.PI*2); ctx.fill();
-
-    ctx.strokeStyle="rgba(255,220,140,.55)";
-    ctx.lineWidth=2;
-    ctx.beginPath();
-    ctx.moveTo(x+120, y-6-wave); ctx.lineTo(x+92, y-16-wave);
-    ctx.moveTo(x+120, y-2-wave); ctx.lineTo(x+92, y+10-wave);
-    ctx.stroke();
+    roundRect(x+108,y-18-wave,44,30,14,"rgba(180,40,60,.95)","rgba(0,0,0,.30)");
   }
 
   function drawDroppedEnvelope(){
     if(!droppedEnvelope.active) return;
     const x=droppedEnvelope.x, y=droppedEnvelope.y;
 
-    ctx.fillStyle="rgba(0,0,0,.12)";
-    ctx.beginPath(); ctx.ellipse(x, y+10, 18, 6, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle="rgba(0,0,0,.22)";
+    ctx.beginPath(); ctx.ellipse(x,y+10,18,6,0,0,Math.PI*2); ctx.fill();
 
     ctx.save();
     ctx.translate(x,y);
     ctx.rotate(droppedEnvelope.rot);
 
-    roundRect(-16,-14,32,22,6,"rgba(180,40,60,.95)","rgba(0,0,0,.16)");
+    roundRect(-16,-14,32,22,6,"rgba(180,40,60,.98)","rgba(0,0,0,.30)");
     ctx.fillStyle="rgba(255,255,255,.18)";
-    ctx.beginPath();
-    ctx.moveTo(-16,-14); ctx.lineTo(0,0); ctx.lineTo(16,-14); ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle="rgba(255,220,140,.88)";
+    ctx.beginPath(); ctx.moveTo(-16,-14); ctx.lineTo(0,0); ctx.lineTo(16,-14); ctx.closePath(); ctx.fill();
+    ctx.fillStyle="rgba(255,220,140,.90)";
     ctx.beginPath(); ctx.ellipse(0,2,5,5,0,0,Math.PI*2); ctx.fill();
 
     ctx.restore();
-
-    if(droppedEnvelope.landed && Math.random()<0.25){
-      ctx.fillStyle="rgba(255,220,140,.55)";
-      ctx.fillRect(x+14, y-18, 2, 2);
-    }
   }
 
-  // particles
   function drawParticles(){
-    for(const f of fireworks){
-      ctx.fillStyle=f.col;
-      ctx.fillRect(f.x, f.y, 3, 3);
-    }
-    for(const c of confetti){
-      ctx.fillStyle=c.col;
-      ctx.fillRect(c.x, c.y, 4, 2);
-    }
+    for(const f of fireworks){ ctx.fillStyle=f.col; ctx.fillRect(f.x,f.y,3,3); }
+    for(const c of confetti){ ctx.fillStyle=c.col; ctx.fillRect(c.x,c.y,4,2); }
   }
 
-  // Bubble UI (screen space)
   function drawBubble(){
     if(!bubble.on) return;
     const w=canvas.clientWidth, h=canvas.clientHeight;
-    const shown = bubble.full.slice(0, Math.floor(bubble.reveal));
+    const shown=bubble.full.slice(0, Math.floor(bubble.reveal));
     const maxChars=56;
-
     const words=shown.split(/\s+/);
-    const lines=[];
-    let line="";
+    const lines=[]; let line="";
     for(const w0 of words){
       if(!line) line=w0;
-      else if((line+" "+w0).length<=maxChars) line += " "+w0;
+      else if((line+" "+w0).length<=maxChars) line+=" "+w0;
       else { lines.push(line); line=w0; }
     }
     if(line) lines.push(line);
 
-    const bx = Math.max(14, Math.min(w-380, (player.x-cam.x)-180));
-    const by = Math.max(14, Math.min(h-140, (player.y-cam.y)-140));
+    const bx=Math.max(14, Math.min(w-380, (player.x-cam.x)*ZOOM - 180));
+    const by=Math.max(14, Math.min(h-140, (player.y-cam.y)*ZOOM - 140));
     const bw=380;
     const bh=18 + Math.min(5, lines.length)*18 + 12;
 
-    roundRect(bx,by,bw,bh,14,"rgba(255,255,255,.86)","rgba(0,0,0,.10)");
+    roundRect(bx,by,bw,bh,14,"rgba(255,255,255,.86)","rgba(0,0,0,.12)");
     ctx.fillStyle="rgba(40,20,30,.90)";
     ctx.font="14px system-ui";
     ctx.fillText(bubble.who + ":", bx+14, by+22);
@@ -1084,95 +891,89 @@ if(envelopeOpen){
     }
   }
 
-  // ===== Update =====
   function updateCrowd(dt){
     if(act.phase!=="free") return;
     for(const p of crowd){
       p.wait -= dt;
       if(p.wait<=0){
-        p.wait = rnd(0.4,1.6);
+        p.wait = rnd(0.6,2.0);
         const a = rnd(0,Math.PI*2);
-        p.vx = Math.cos(a)*rnd(15,36);
-        p.vy = Math.sin(a)*rnd(12,30);
+        p.vx = Math.cos(a)*rnd(10,28);
+        p.vy = Math.sin(a)*rnd(10,28);
       }
       p.x += p.vx*dt;
       p.y += p.vy*dt;
-
-      p.x = clamp(p.x, 95, world.w-95);
-      p.y = clamp(p.y, yardTop+18, world.h-110);
-
+      p.x = clamp(p.x, 110, world.w-110);
+      p.y = clamp(p.y, yardTop+20, world.h-105);
       p.vx *= (1 - dt*1.6);
       p.vy *= (1 - dt*1.6);
     }
   }
 
   function updatePlayer(dt){
-    // allow movement except during the main lion + reveal beats
     if(act.phase==="lion" || act.phase==="reveal") return;
+    if(envelopeOpen) return;
+
     const d=desiredDir();
-    const len = Math.hypot(d.dx,d.dy) || 1;
-    const dx = (d.dx/len)*player.spd;
-    const dy = (d.dy/len)*player.spd;
+    const len=Math.hypot(d.dx,d.dy)||1;
+    const dx=(d.dx/len)*player.spd;
+    const dy=(d.dy/len)*player.spd;
+    player.x+=dx*dt; player.y+=dy*dt;
 
-    player.x += dx*dt;
-    player.y += dy*dt;
+    player.x=clamp(player.x, 85, world.w-85);
+    player.y=clamp(player.y, yardTop+20, world.h-105);
 
-    player.x = clamp(player.x, 85, world.w-85);
-    player.y = clamp(player.y, yardTop+20, world.h-105);
-
-    if(Math.abs(dx)+Math.abs(dy)>1){
-      player.walk += dt*10;
-    }
+    if(Math.abs(dx)+Math.abs(dy)>1) player.walk += dt*10;
   }
 
-  function updateAct(dt, time){
+  function updateAct(dt, t){
     act.t += dt;
 
     if(act.phase==="lion"){
       if(Math.random()<0.06) spawnFirework(rnd(world.w*0.35, world.w*0.85), rnd(80, 190));
-      if(act.t > 6.5){
+      if(act.t>6.5){
         act.phase="reveal"; act.t=0;
-        choco.visible=true;
-        choco.x = stage.x+20; choco.y = stage.y-10; choco.yOff = 30;
+        choco.visible=true; choco.x=stage.x+20; choco.y=stage.y-10; choco.yOff=30;
         say("🍫","Happy year of the horse!!!",6.0,16);
-        statusEl.textContent="A surprise…!";
+        setStatus("A surprise…!");
       }
     } else if(act.phase==="reveal"){
       choco.yOff = Math.max(-10, choco.yOff - dt*120);
-      if(act.t > 2.0){
+      if(act.t>2.0){
         act.phase="dragon"; act.t=0;
-        dragon.visible=true;
-        dragon.x = -260; dragon.y = 170;
-        dragon.carrying=false;
+        dragon.visible=true; dragon.x=-260; dragon.y=170; dragon.carrying=false;
       }
     } else if(act.phase==="dragon"){
       dragon.x += dragon.vx*dt;
-
-      if(!dragon.carrying && dragon.x > stage.x - 40){
-        dragon.carrying=true;
-        say("Festival","WAAAH!! A DRAGON!!",4.5,18);
-      }
+      if(!dragon.carrying && dragon.x > stage.x - 40) dragon.carrying = true;
       if(dragon.carrying){
         choco.x = dragon.x + 110;
         choco.y = dragon.y + 10;
-        choco.yOff = Math.sin(time*10)*4;
+        choco.yOff = Math.sin(t*10)*4;
+        if(!droppedEnvelope.active && dragon.x > stage.x + 120){
+          spawnDroppedEnvelope(dragon.x + 70, dragon.y + 30);
+        }
       }
-
-      // drop envelope once after grab
-      if(dragon.carrying && !droppedEnvelope.active && dragon.x > stage.x + 120){
-        spawnDroppedEnvelope(dragon.x + 70, dragon.y + 30);
-      }
-
       if(Math.random()<0.08) spawnFirework(rnd(world.w*0.35, world.w*0.85), rnd(70, 180));
-
       if(dragon.x > world.w + 260){
+        // launch a tiny sky silhouette that keeps flying into the distance
+        skyFlight.active = true;
+        skyFlight.vx = 60;
+        skyFlight.scale = 0.6;
+        skyFlight.t = 0;
+        // start near the upper-right of the screen so it always shows
+        skyFlight.x = canvas.clientWidth * 0.70;
+        skyFlight.y = canvas.clientHeight * 0.22;
+        skyFlight.vx = 140;
+        skyFlight.vy = -55;
+        skyFlight.scale = 1.0;
+
         act.phase="finale"; act.t=0;
-        dragon.visible=false;
-        choco.visible=false;
+        dragon.visible=false; choco.visible=false;
         burstConfetti(stage.x, stage.y+30);
         say("Festival","新年快乐！恭喜发财！",10.0,14);
-        statusEl.textContent="Happy New Year! (新年快乐 · 恭喜发财) — Talk at the stage to replay!";
-        actPill.textContent="Act: Finale";
+        setStatus("Happy New Year! — Talk at the stage to replay!");
+        setAct("Act: Finale");
       }
     }
   }
@@ -1200,199 +1001,106 @@ if(envelopeOpen){
   function updateBubble(dt){
     if(!bubble.on) return;
     if(!bubble.done){
-      bubble.reveal += dt * bubble.cps;
+      bubble.reveal += dt*bubble.cps;
       if(bubble.reveal >= bubble.full.length){
-        bubble.reveal = bubble.full.length;
-        bubble.done = true;
+        bubble.reveal = bubble.full.length; bubble.done = true;
       }
     }
     bubble.ttl -= dt;
     if(bubble.ttl <= 0) bubble.on=false;
   }
 
+  function updateSkyFlight(dt){
+    if(!skyFlight.active) return;
+    skyFlight.t += dt;
+
+    // steady glide across sky
+    skyFlight.x += skyFlight.vx * dt;
+    skyFlight.y += Math.sin(skyFlight.t * 2) * 8 * dt;
+
+    // wrap around screen instead of disappearing
+    if(skyFlight.x > canvas.clientWidth + 100){
+      skyFlight.x = -100;
+    }
+  }
+
   function updateCamera(){
     const vw=canvas.clientWidth, vh=canvas.clientHeight;
-    const targetX = clamp(player.x - vw/2, 0, world.w - vw);
-    const targetY = clamp(player.y - vh/2, 0, world.h - vh);
-    cam.x += (targetX - cam.x)*0.08;
-    cam.y += (targetY - cam.y)*0.08;
+    const viewW=vw/ZOOM, viewH=vh/ZOOM;
+    const targetX=clamp(player.x - viewW/2, 0, world.w - viewW);
+    const targetY=clamp(player.y - viewH/2, 0, world.h - viewH);
+    cam.x += (targetX - cam.x)*0.10;
+    cam.y += (targetY - cam.y)*0.10;
   }
 
-  // ===== Render (world translated once) =====
-  function render(time){
-    drawBackground(time);
+  function render(t){
+    drawBackground(t);
 
     ctx.save();
+    ctx.scale(ZOOM,ZOOM);
     ctx.translate(-cam.x, -cam.y);
 
-    drawTown(time);
+    drawTown(t);
 
-    // crowd in yard
     for(const p of crowd){
-      if(p.kind==="person") drawVillager(p, time);
-      else drawZodiac(p, time);
+      if(p.kind==="person") drawPerson(p,t);
+      else drawZodiac(p,t);
     }
 
-    // show actors
-    drawLion(time);
-    drawChocolateMan(time);
-    drawDragon(time);
-
-    // player
-    drawPotato(time);
-
-    // particles + envelope
-    drawParticles();
+    drawLion(t);
+    drawChocolate(t);
+    drawDragon(t);
     drawDroppedEnvelope();
+    drawPotato(t);
+    drawParticles();
 
     ctx.restore();
-
-    // UI
     drawBubble();
 
-    // hints (screen space)
-    if(act.phase==="free" && dist(player.x,player.y,stage.x,stage.y) < stage.r+25){
-      const sx = stage.x - cam.x;
-      const sy = stage.y - cam.y;
-      roundRect(sx-190, sy+96, 380, 40, 14, "rgba(255,255,255,.82)", "rgba(0,0,0,.10)");
+    if(!envelopeOpen && droppedEnvelope.active && dist(player.x,player.y,droppedEnvelope.x,droppedEnvelope.y) < 90){
+      const ex=(droppedEnvelope.x - cam.x)*ZOOM;
+      const ey=(droppedEnvelope.y - cam.y)*ZOOM;
+      roundRect(ex-120, ey-58, 240, 34, 12, "rgba(255,255,255,.82)", "rgba(0,0,0,.10)");
       ctx.fillStyle="rgba(40,20,30,.85)";
-      ctx.font="15px system-ui";
-      ctx.fillText("Talk to start the Lion Dance!", sx-145, sy+122);
-    }
-    if(act.phase==="finale" && dist(player.x,player.y,stage.x,stage.y) < stage.r+30){
-      const sx = stage.x - cam.x;
-      const sy = stage.y - cam.y;
-      roundRect(sx-210, sy+138, 420, 40, 14, "rgba(255,255,255,.82)", "rgba(0,0,0,.10)");
-      ctx.fillStyle="rgba(40,20,30,.85)";
-      ctx.font="15px system-ui";
-      ctx.fillText("Talk here to replay the show!", sx-140, sy+164);
-    }
-    if(droppedEnvelope.active && droppedEnvelope.landed){
-      const d = dist(player.x,player.y,droppedEnvelope.x,droppedEnvelope.y);
-      if(d<80){
-        const ex = droppedEnvelope.x - cam.x;
-        const ey = droppedEnvelope.y - cam.y;
-        roundRect(ex-120, ey-58, 240, 34, 12, "rgba(255,255,255,.82)", "rgba(0,0,0,.10)");
-        ctx.fillStyle="rgba(40,20,30,.85)";
-        ctx.font="14px system-ui";
-        ctx.fillText("A red envelope fell… (Talk)", ex-98, ey-34);
-      }
+      ctx.font="14px system-ui";
+      ctx.fillText("A red envelope fell… (Talk)", ex-98, ey-34);
     }
   }
 
-  // ===== Loop =====
   let last=performance.now();
   let time=0;
-
   function tick(now){
     const dt=Math.min(0.033, (now-last)/1000);
-    last=now;
-    time += dt;
+    last=now; time += dt;
 
-    updateMusic(dt);
-    updateBubble(dt);
     updateCrowd(dt);
+    updateBubble(dt);
     updatePlayer(dt);
     updateAct(dt, time);
     updateParticles(dt);
     updateDroppedEnvelope(dt);
     updateCamera();
+    updateSkyFlight(dt);
     render(time);
 
     requestAnimationFrame(tick);
   }
 
-  // ===== Start =====
   function start(){
     started=true;
     document.getElementById("loading").classList.add("hidden");
-    statusEl.textContent="Walk to the center stage to start the Lion Dance.";
-    actPill.textContent="Act: Festival";
+    setAct("Act: Festival");
+    setStatus("Walk to the center stage and press Talk (E) to start the Lion Dance.");
     requestAnimationFrame(tick);
   }
 
   document.getElementById("startBtn").addEventListener("click", ()=>{
-  initAudio();
-  const music = document.getElementById("bgMusic");
-  music.volume = 0.6;   // adjust volume here
-  music.play();
-  start();
-});
-  // ===== Envelope Image Functions =====
-function openEnvelopeImage(){
-  const overlay = document.getElementById("envelopeOverlay");
-  const card = document.getElementById("envelopeCard");
-
-  overlay.classList.remove("hidden");
-
-  setTimeout(()=>{
-    card.style.transform = "scale(1) rotate(0deg)";
-  }, 50);
-
-  spawnFirework(player.x, player.y - 60);
-}
-
-function openEnvelopeImage(){
-  const overlay = document.getElementById("envelopeOverlay");
-  const card = document.getElementById("envelopeCard");
-
-  overlay.classList.remove("hidden");
-  envelopeOpen = true;
-
-  setTimeout(()=>{
-    card.style.transform = "scale(1) rotate(0deg)";
-  }, 50);
-
-  spawnFirework(player.x, player.y - 60);
-}
-
-function closeEnvelopeImage(){
-  const overlay = document.getElementById("envelopeOverlay");
-  const card = document.getElementById("envelopeCard");
-
-  card.style.transform = "scale(.6) rotate(8deg)";
-
-  setTimeout(()=>{
-    overlay.classList.add("hidden");
-    envelopeOpen = false;
-  }, 300);
-}
+    initSfx();
+    startBackgroundMusic();
+    start();
+  });
 
 })();
 </script>
-
-<!-- 🔴 PASTE THE ENVELOPE OVERLAY HERE -->
-<div id="envelopeOverlay" class="hidden" style="
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-  overflow:hidden;
-">
-  <div id="envelopeCard" style="
-    transform:scale(.6) rotate(-8deg);
-    transition:transform .5s cubic-bezier(.2,1.5,.4,1);
-    text-align:center;
-  ">
-    <img src="firehorse.png" style="
-      max-width:80vw;
-      max-height:80vh;
-      border-radius:18px;
-      box-shadow:0 30px 90px rgba(0,0,0,.6);
-    ">
-    <div style="
-      margin-top:10px;
-      color:#fff;
-      font-size:14px;
-      opacity:.8;
-    ">
-      Tap anywhere to close 🧧
-    </div>
-  </div>
-</div>
-<audio id="bgMusic" src="festival.mp3" loop></audio>
 </body>
 </html>
